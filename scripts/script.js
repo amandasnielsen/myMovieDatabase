@@ -1,6 +1,7 @@
-import { fetchTopMovies } from './modules/api.js';
+import { fetchTopMovies, fetchMovies } from './modules/api.js';
 import { renderTrailers } from './modules/caroussel.js';
 import { toggleFavorite, populateFavorites } from './modules/favorites.js';
+import { displaySearchResults } from './modules/search.js';
 // import { createMovieCard } from './modules/movieCard.js';
 
 
