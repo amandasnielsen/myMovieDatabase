@@ -1,5 +1,6 @@
 import { fetchTopMovies, fetchMovies } from './modules/api.js';
 import { renderTrailers } from './modules/caroussel.js';
+// import { getFavorites, saveFavorites, displayFavorites, removeFavorite } from './modules/favorites.js';
 // import { createMovieCard } from './components/movieCard.js';
 
 
@@ -42,47 +43,9 @@ async function init() {
     renderMovieList();
 }
 
-// Favorite-movies
-function toggleFavorite(movie) {
-    const isFavorite = favoriteMovies.some(favMovie => favMovie.Title === movie.Title);
-    
-    if (isFavorite) {
-        favoriteMovies = favoriteMovies.filter(favMovie => favMovie.Title !== movie.Title);
-    } else {
-        favoriteMovies.push(movie);
-    }
-    
-    saveFavorites();
-    updateStarColor(movie);
-}
-
-// Saving favorite movies to localStorage
-function saveFavorites() {
-    localStorage.setItem('favoriteMovies', JSON.stringify(favoriteMovies));
-}
-
-// Hämta favorit-filmer från localStorage
-function getFavorites() {
-    const storedFavorites = localStorage.getItem('favoriteMovies');
-    if (storedFavorites) {
-        return JSON.parse(storedFavorites);
-    }
-    return [];
-}
-
-// Update star-color if the star is pressed
-function updateStarColor(movie) {
-    const star = document.querySelector(`.movie-card[data-title="${movie.Title}"] .star`);
-    if (favoriteMovies.some(favMovie => favMovie.Title === movie.Title)) {
-        star.classList.add('filled');
-    } else {
-        star.classList.remove('filled');
-    }
-}
-
 function renderMovieList() {
     const cardContainer = document.getElementById('cardContainer');
-    favoriteMovies = getFavorites();
+    // favoriteMovies = getFavorites();
 
     // Stylingen nedan ska in i movieCard.js
 
@@ -113,6 +76,41 @@ function renderMovieList() {
 
         updateStarColor(movie);
     });
+}
+
+// Favorite-movies
+function toggleFavorite(movie) {
+    const isFavorite = favoriteMovies.some(favMovie => favMovie.Title === movie.Title);
+    
+    if (isFavorite) {
+        favoriteMovies = favoriteMovies.filter(favMovie => favMovie.Title !== movie.Title);
+    } else {
+        favoriteMovies.push(movie);
+    }
+    
+    saveFavorites();
+    updateStarColor(movie);
+}
+
+// Saving favorite movies to localStorage (sparas inte?)
+function saveFavorites() {
+    localStorage.setItem('favoriteMovies', JSON.stringify(favoriteMovies));
+}
+
+// Getting favorite-movies from localStorage
+function getFavorites () {
+    const storedFavorites = localStorage.getItem("favoriteMovie");
+    return storedFavorites ? JSON.parse(storedFavorites) : [];
+}
+
+// Update star-color if the star is pressed
+function updateStarColor(movie) {
+    const star = document.querySelector(`.movie-card[data-title="${movie.Title}"] .star`);
+    if (favoriteMovies.some(favMovie => favMovie.Title === movie.Title)) {
+        star.classList.add('filled');
+    } else {
+        star.classList.remove('filled');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
