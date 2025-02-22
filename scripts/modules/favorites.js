@@ -1,57 +1,29 @@
-// export function getFavorites () {
-//     const storedFavorites = localStorage.getItem("favoriteMovie");
-//     return storedFavorites ? JSON.parse(storedFavorites) : [];
-// }
+const localStorageKeyFavorites = 'favoriteMovies';
 
-// export function saveFavorites(favoriteMovies) {
-//     localStorage.setItem("favoriteMovies", JSON.stringify(favoriteMovies));
-// }
+// Favorite-movies
+export function toggleFavorite(movie) {
+	const favoriteIndex = favoriteMovies.findIndex(favMovie => favMovie.Title === movie.Title);
 
-// export function displayFavorites() {
-//     const favoritesContainer = document.getElementById("favorites-container");
-//     const favoriteMovies = getFavorites();
+	if (favoriteIndex === -1) {
+		favoriteMovies.push(movie);
+	} else {
+		favoriteMovies.splice(favoriteIndex, 1);
+	}
 
-//     while (favoritesContainer.firstChild) {
-//         favoritesContainer.removeChild(favoritesContainer.firstChild);
-//     }
+	saveFavorites();    
+	updateStarColor(movie);
+}
 
-//     if (favoriteMovies.length === 0) {
-//         const noFavoritesText = document.createElement("p");
-//         noFavoritesText.textContent = "You have no favorite movies :(";
-//         favoritesContainer.appendChild(noFavoritesText);
-//         return;
-//     }
+// Saving favorite movies to localStorage
+function saveFavorites() {
+	localStorage.setItem(localStorageKeyFavorites, JSON.stringify(favoriteMovies));
+}
 
-//     favoriteMovies.forEach(movie => {
-//         const movieCard = document.createElement("div");
-//         movieCard.classList.add("movie-card");
-//         movieCard.setAttribute("data-title", movie.Title);
+// Getting favorite-movies from localStorage
+export function populateFavorites () {
+	const storedFavorites = localStorage.getItem(localStorageKeyFavorites);
 
-//         const poster = document.createElement("img");
-//         poster.classList.add("movie-card__poster");
-//         poster.src = movie.Poster;
-//         poster.alt = movie.Title;
-
-//         const title = document.createElement("h3");
-//         title.classList.add("movie-card__title");
-//         title.textContent = movie.Title;
-
-//         const star = document.createElement("span");
-//         star.classList.add("star", "filled");
-//         star.textContent = "★";
-//         star.addEventListener("click", () => removeFavorite(movie.Title));
-
-//         movieCard.appendChild(poster);
-//         movieCard.appendChild(title);
-//         movieCard.appendChild(star);
-
-//         favoritesContainer.appendChild(movieCard);
-//     });
-// }
-
-// export function removeFavorite(title) {
-//     let favoriteMovies = getFavorites();
-//     favoriteMovies = favoriteMovies.filter(movie => movie.Title !== title);
-//     saveFavorites(favoriteMovies);
-//     displayFavorites();
-// }
+	if (storedFavorites) {
+		favoriteMovies.push(...JSON.parse(storedFavorites));
+	}
+}

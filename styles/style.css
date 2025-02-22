@@ -5,7 +5,7 @@
 :root {
     --header-grey: #121212;
     /* Primary BG bör vara din bakgrundsfärg */
-    --primary-bg: #000000;
+    --primary-bg: #080808;
     --primary-white: #ffffff;
     --primary-grey: #1A1A1A;
     --text-yellow: #F5C518;
@@ -95,25 +95,13 @@ body {
     margin-bottom: 3em;
 }
 
-h3 {
-    font-size: 1rem;
-    margin-top: 1em;
-    max-width: 300px;
-    text-align: center;
-    color: var(--primary-white);
-}
-
 .movie-card {
-    position: relative;
     overflow: hidden;
     width: 300px;
-    height: 450px;
     border: 2px solid rgb(116, 116, 116);
-    padding: 0.5em;
+    padding: 0.5em 0.5em 0 0.5em;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
 .movie-card:hover {
@@ -122,22 +110,39 @@ h3 {
 
 .movie-card__poster {
     width: 100%;
-    height: 90%;
     object-fit: cover;
+    height: 420px;
+}
+
+.movie-card__bottom-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 0;
+}
+
+.movie-card__title {
+    font-size: 1rem;
+    color: var(--primary-white);
 }
 
 .star {
-    position: absolute;
-    top: 0.2em;
-    right: 0.3em;
-    font-size: 3rem;
+    font-size: 1.4rem;
     color: #ffffff00;
     cursor: pointer;    
-    -webkit-text-stroke: 3px var(--text-yellow);
+    -webkit-text-stroke: 2px var(--text-yellow);
 }
 
 .star.filled {
     color: var(--text-yellow);
+}
+
+.star:hover {
+    color: var(--text-yellow);
+}
+
+.star.filled:hover {
+    color: #ffffff00;
 }
 
 /* .search-results-section {
