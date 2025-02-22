@@ -3,7 +3,7 @@
 
 /* Variables */
 :root {
-    --header-grey: #121212;
+    --header-grey: #131313;
     /* Primary BG bör vara din bakgrundsfärg */
     --primary-bg: #080808;
     --primary-white: #ffffff;
@@ -18,8 +18,15 @@
     margin: 0;
 }
 
+@font-face {
+	font-family: 'Quicksand';
+	src: url('../font/Quicksand-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+
 html {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Quicksand';
 }
 
 body {
@@ -80,11 +87,17 @@ body {
 
 .header__fav-btn {
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--text-yellow);
     background: none;
     border: none;
     cursor: pointer;
+}
+
+.popular-title {
+    color: var(--text-yellow);
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .card-container {

@@ -1,7 +1,7 @@
 import { fetchTopMovies } from './modules/api.js';
 import { renderTrailers } from './modules/caroussel.js';
 import { toggleFavorite, populateFavorites } from './modules/favorites.js';
-// import { createMovieCard } from './components/movieCard.js';
+// import { createMovieCard } from './modules/movieCard.js';
 
 
 if(window.location.pathname === '/' || window.location.pathname === '/index.html') {
