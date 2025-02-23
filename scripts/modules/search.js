@@ -5,40 +5,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+    const query = new URLSearchParams(window.location.search).get('query');
 
     console.log('Script loaded on:', window.location.pathname);
 
-    if (searchForm) {
-        searchForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const query = searchInput.value.trim();
+    searchForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        if (query.length > 2) window.location.href = `search.html?query=${query}`;
+    });
 
-            if (query.length > 2) {
-                searchDescription.textContent = `Here are the top 10 movies for "${query}"`;
-                window.location.href = `search.html?query=${query}`;
+    if (window.location.pathname.includes('search.html') && query) {
+        fetchMovies(query).then(movies => {
+            if (movies?.length) {
+                const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovies')) || [];
+                displaySearchResults(movies, searchResults, favoriteMovies);
+            } else {
+                searchResults.textContent = 'No movies found.';
             }
-        });
-    }
-
-    // Ladda sökresultaten om vi är på search.html
-    if (window.location.pathname.includes('search.html')) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('query');
-
-        if (query) {
-            fetchMovies(query).then(movies => {
-                if (movies && movies.length > 0) {
-                    console.log('Movies fetched:', movies);
-                    const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovies')) || [];
-                    displaySearchResults(movies, searchResults, favoriteMovies);
-                } else {
-                    console.log('No movies found');
-                    searchResults.textContent = 'No movies found.';
-                }
-            }).catch(error => {
-                console.error('Error fetching movies:', error);
-            });
-        }
+        }).catch(console.error);
     }
 });
 
@@ -70,13 +55,23 @@ export function displaySearchResults(movies, searchResults, favoriteMovies) {
             star.classList.add('filled');
         }
 
-        star.addEventListener('click', () => toggleFavorite(movie));
+        // Förhindrar omdirigering när stjärnan klickas
+        star.addEventListener('click', (event) => {
+            event.stopPropagation();
+            toggleFavorite(movie);
+        });
+
+       // star.addEventListener('click', () => toggleFavorite(movie));
 
         bottomWrapper.appendChild(title);
         bottomWrapper.appendChild(star);
 
         movieCard.appendChild(poster);
         movieCard.appendChild(bottomWrapper);
+
+        movieCard.addEventListener('click', () => {
+            window.location.href = `movie.html?imdbID=${movie.imdbID}`;
+        });
 
         searchResults.appendChild(movieCard);
 

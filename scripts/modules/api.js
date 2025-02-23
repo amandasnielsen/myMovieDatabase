@@ -24,3 +24,16 @@ export async function fetchMovies(query) {
         return [];
     }
 }
+
+// API for the detailed search for movies
+export async function fetchMovieDetails(imdbID) {
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&plot=full&i=${imdbID}`);
+    const data = await response.json();
+    
+    if (data.Response === "True") {
+        return data;
+    } else {
+        console.error("No movies found or error:", data.Error);
+        return null;
+    }
+}

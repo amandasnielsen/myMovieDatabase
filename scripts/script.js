@@ -4,6 +4,7 @@ import { populateFavorites } from './modules/favorites.js';
 import { displaySearchResults } from './modules/search.js';
 import { createMovieCard } from './modules/movieCard.js';
 import { getStore } from './modules/store.js';
+import { displayMovieDetails } from './modules/movie.js';
 
 const store = getStore();
 let currentPage = 'index'
