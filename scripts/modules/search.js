@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchForm) {
         searchForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+        event.preventDefault();
 
             const query = searchInput.value.trim();
             if (query.length > 2) {
