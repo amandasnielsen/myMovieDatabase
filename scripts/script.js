@@ -1,103 +1,69 @@
 import { fetchTopMovies, fetchMovies } from './modules/api.js';
 import { renderTrailers } from './modules/caroussel.js';
-import { toggleFavorite, populateFavorites } from './modules/favorites.js';
+import { populateFavorites } from './modules/favorites.js';
 // import { displaySearchResults } from './modules/search.js';
-// import { createMovieCard } from './modules/movieCard.js';
+import { createMovieCard } from './modules/movieCard.js';
+import { getStore } from './modules/store.js';
 
+const store = getStore();
+let currentPage = 'index'
 
-if(window.location.pathname === '/' || window.location.pathname === '/index.html') {
-    console.log('index.html');
-
-} else if(window.location.pathname === '/favorites.html') {
-    console.log('favorites.html');
-
-} else if(window.location.pathname === '/movie.html') {
-    console.log('movie.html');
-
-} else if(window.location.pathname === '/search.html') {
-    console.log('search.html');
+if (window.location.pathname.split('/').pop() === 'favorites.html') {
+	currentPage = 'favorites';
+} else if (window.location.pathname.split('/').pop() === 'movie.html') {
+	currentPage = 'movie';
+} else if (window.location.pathname.split('/').pop() === 'search.html') {
+	currentPage = 'search';
 }
 
-const topMovieList = [];
-const favoriteMovies = [];
+console.log(`Current page: ${currentPage}`);
 
-async function init() {
-    const topMovies = await fetchTopMovies();
-    topMovieList.push(...topMovies);
+async function initIndex() {
+	console.log('Initializing index page')
 
-    if (!topMovieList || topMovieList.length === 0) {
-        console.error("No list was found.");
-        return;
-    }
+	store.topMovieList = await fetchTopMovies();
 
-    console.log("Movielist:", topMovieList);
+	if (!store.topMovieList || store.topMovieList.length === 0) {
+		console.error("No list was found.");
+		return;
+	}
 
-    const shuffledMovies = [...topMovieList].sort(() => 0.5 - Math.random());
-    const selectedTrailers = shuffledMovies.slice(0, 5);
+	console.log("Movielist:", store.topMovieList);
 
-    // Loop through all movies and send 5 to renderTrailers()
-    for (let i = 0; i < 5; i++) {
-        renderTrailers(selectedTrailers[i], i + 1);
-    }
-    
-    populateFavorites();
+	const shuffledMovies = [...store.topMovieList].sort(() => 0.5 - Math.random());
+	const selectedTrailers = shuffledMovies.slice(0, 5);
 
-    // List all movies in the recommendation-list
-    renderMovieList();
+	// Loop through all movies and send 5 to renderTrailers()
+	for (let i = 0; i < 5; i++) {
+		renderTrailers(selectedTrailers[i], i + 1);
+	}
+
+	populateFavorites();
+
+	// List all movies in the recommendation-list
+	renderMovieList(store.topMovieList);
 }
 
-function renderMovieList() {
-    const cardContainer = document.getElementById('cardContainer');
+function initFavorites() {
+	console.log('Initializing favorites page');
 
-    // Stylingen nedan ska in i movieCard.js
-
-    topMovieList.forEach(movie => {
-        const movieCard = document.createElement('div');
-        movieCard.classList.add('movie-card');
-        movieCard.setAttribute('data-title', movie.Title);
-
-        const poster = document.createElement('img');
-        poster.classList.add('movie-card__poster');
-        poster.src = movie.Poster;
-        poster.alt = movie.Title;
-
-        const bottomWrapper = document.createElement('div');
-        bottomWrapper.classList.add('movie-card__bottom-wrapper');
-
-        const title = document.createElement('h3');
-        title.classList.add('movie-card__title');
-        title.textContent = movie.Title;
-
-        const star = document.createElement('span');
-        star.classList.add('star');
-
-        if (favoriteMovies.some(favMovie => favMovie.Title === movie.Title)) {
-            star.classList.add('filled');
-        }
-
-        star.textContent = '★';
-        star.addEventListener('click', () => toggleFavorite(movie));
-        
-        bottomWrapper.appendChild(title);
-        bottomWrapper.appendChild(star);
-
-        movieCard.appendChild(poster);
-        movieCard.appendChild(bottomWrapper);
-
-        cardContainer.appendChild(movieCard);
-
-        updateStarColor(movie);
-    });
+	populateFavorites();
+	renderMovieList(store.favoriteMovies);
 }
 
-// Update star-color if the star is pressed
-function updateStarColor(movie) {
-    const star = document.querySelector(`.movie-card[data-title="${movie.Title}"] .star`);
-    if (favoriteMovies.some(favMovie => favMovie.Title === movie.Title)) {
-        star.classList.add('filled');
-    } else {
-        star.classList.remove('filled');
-    }
+function renderMovieList(movieList) {
+	const cardContainer = document.getElementById('cardContainer');
+
+	movieList.forEach(movie => {
+		const isFavorite = store.favoriteMovies.some(favMovie => favMovie.Title === movie.Title)
+		createMovieCard(movie, isFavorite);
+	});
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+	if (currentPage === 'index') {
+		initIndex();
+	} else if (currentPage === 'favorites') {
+		initFavorites();
+	}
+});

@@ -1,30 +1,37 @@
-// export function createMovieCard(movie) {
+import { toggleFavorite } from './favorites.js';
 
-//     topMovieList.forEach(movie => {
-//         const movieCard = document.createElement('div');
-//         movieCard.classList.add('movie-card');
-//         movieCard.setAttribute('data-title', movie.Title);
+export function createMovieCard(movie, isFavorite) {
+	const movieCard = document.createElement('div');
+	movieCard.classList.add('movie-card');
+	movieCard.setAttribute('data-title', movie.Title);
 
-//         const poster = document.createElement('img');
-//         poster.classList.add('movie-card__poster');
-//         poster.src = movie.Poster;
-//         poster.alt = movie.Title;
+	const poster = document.createElement('img');
+	poster.classList.add('movie-card__poster');
+	poster.src = movie.Poster;
+	poster.alt = movie.Title;
 
-//         const title = document.createElement('h3');
-//         title.classList.add('movie-card__title');
-//         title.textContent = movie.Title;
+	const bottomWrapper = document.createElement('div');
+	bottomWrapper.classList.add('movie-card__bottom-wrapper');
 
-//         const star = document.createElement('span');
-//         star.classList.add('star');
-//         star.textContent = '★';
-//         star.addEventListener('click', () => toggleFavorite(movie));
+	const title = document.createElement('h3');
+	title.classList.add('movie-card__title');
+	title.textContent = movie.Title;
 
-//         movieCard.appendChild(poster);
-//         movieCard.appendChild(title);
-//         movieCard.appendChild(star);
+	const star = document.createElement('span');
+	star.classList.add('star');
 
-//         cardContainer.appendChild(movieCard);
+	if (isFavorite) {
+		star.classList.add('filled');
+	}
 
-//         updateStarColor(movie);
-//     });
-// }
+	star.textContent = '★';
+	star.addEventListener('click', () => toggleFavorite(movie));
+	
+	bottomWrapper.appendChild(title);
+	bottomWrapper.appendChild(star);
+
+	movieCard.appendChild(poster);
+	movieCard.appendChild(bottomWrapper);
+
+	cardContainer.appendChild(movieCard);
+}
