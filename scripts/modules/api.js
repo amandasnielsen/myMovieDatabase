@@ -14,7 +14,7 @@ export async function fetchTopMovies() {
 const API_KEY = 'f695ea61';
 
 export async function fetchMovies(query) {
-    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`);
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}*`);
     const data = await response.json();
     
     if (data.Response === "True") {

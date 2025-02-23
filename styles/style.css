@@ -109,6 +109,22 @@ body {
     margin-top: 1em;
 }
 
+.search-title {
+    color: var(--text-yellow);
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.search-description {
+    color: var(--text-yellow);
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 2em;
+    margin-top: 1em;
+}
+
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -167,21 +183,13 @@ body {
     color: #ffffff00;
 }
 
-/* .search-results-section {
-    padding: 2rem;
-    background-color: var(--primary-bg);
-    color: var(--primary-white);
-  }
-  
-  .search-results-section h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .search-results-section .card-container {
+.search-results {
     display: flex;
     flex-wrap: wrap;
-    gap: 2em;
+    gap: 3em;
     justify-content: center;
     margin-bottom: 3em;
-  } */
+    max-width: 1180px;
+    margin: 0 auto;
+    margin-bottom: 3em;
+}

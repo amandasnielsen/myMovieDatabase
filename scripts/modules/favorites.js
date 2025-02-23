@@ -12,7 +12,11 @@ export function toggleFavorite(movie) {
 	} else {
 		store.favoriteMovies.splice(favoriteIndex, 1);
 		saveFavorites();
-		location.reload();
+		updateStarColor(movie);
+		
+		if (window.location.pathname.split('/').pop() === 'favorites.html') {
+			location.reload();
+		}
 		return;
 	}
 
