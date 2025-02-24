@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+    const searchDescription = document.querySelector('.search-description');
     const query = new URLSearchParams(window.location.search).get('query');
 
     console.log('Script loaded on:', window.location.pathname);
@@ -16,6 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (window.location.pathname.includes('search.html') && query) {
+
+        if (searchDescription) {
+            searchDescription.textContent = `Here are the top 10 results based on "${query}"`;
+        }
+
         fetchMovies(query).then(movies => {
             if (movies?.length) {
                 const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovies')) || [];
@@ -55,13 +61,10 @@ export function displaySearchResults(movies, searchResults, favoriteMovies) {
             star.classList.add('filled');
         }
 
-        // Förhindrar omdirigering när stjärnan klickas
         star.addEventListener('click', (event) => {
             event.stopPropagation();
             toggleFavorite(movie);
         });
-
-       // star.addEventListener('click', () => toggleFavorite(movie));
 
         bottomWrapper.appendChild(title);
         bottomWrapper.appendChild(star);

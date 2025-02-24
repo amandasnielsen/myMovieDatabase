@@ -2,7 +2,7 @@ import { fetchMovieDetails } from "./api.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const imdbID = urlParams.get('imdbID'); // Hämta imdbID från URL:en
+    const imdbID = urlParams.get('imdbID');
 
     if (imdbID) {
         fetchMovieDetails(imdbID).then(movie => {
