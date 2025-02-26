@@ -1,13 +1,14 @@
-import { fetchTopMovies, fetchMovies } from './modules/api.js';
+import store from './modules/store.js';
+import { fetchTopMovies } from './modules/api.js';
+import { initFavorites, populateFavorites } from './modules/favorites.js';
+import { initMovieDetails } from './modules/movie.js';
+import { initSearch } from './modules/search.js';
+import { renderMovieList } from './modules/movieCard.js';
 import { renderTrailers } from './modules/caroussel.js';
-import { populateFavorites } from './modules/favorites.js';
-import { displaySearchResults } from './modules/search.js';
-import { createMovieCard } from './modules/movieCard.js';
-import { getStore } from './modules/store.js';
-import { displayMovieDetails } from './modules/movie.js';
 
-const store = getStore();
-let currentPage = 'index'
+// Determine the current page based on the URL.
+// Use split and pop to get the last part of the URL since it can be in a subfolder.
+let currentPage = 'index';
 
 if (window.location.pathname.split('/').pop() === 'favorites.html') {
 	currentPage = 'favorites';
@@ -15,56 +16,55 @@ if (window.location.pathname.split('/').pop() === 'favorites.html') {
 	currentPage = 'movie';
 } else if (window.location.pathname.split('/').pop() === 'search.html') {
 	currentPage = 'search';
-}
+};
 
-console.log(`Current page: ${currentPage}`);
-
+/* 
+ * Initialize the index page
+ *
+ * Fetch top movies from API
+ * Render 5 random trailers
+ * List all top movies
+ */
 async function initIndex() {
-	console.log('Initializing index page')
-
+	// Fetch top movies from API
 	store.topMovieList = await fetchTopMovies();
 
+	// Make sure we have top movies
 	if (!store.topMovieList || store.topMovieList.length === 0) {
-		console.error("No list was found.");
+		console.error('Unable to load top movies');
 		return;
-	}
+	};
 
-	console.log("Movielist:", store.topMovieList);
-
+	// Shuffle all top movies by scrambling their indexes and select the first 5 elements
 	const shuffledMovies = [...store.topMovieList].sort(() => 0.5 - Math.random());
 	const selectedTrailers = shuffledMovies.slice(0, 5);
 
 	// Loop through all movies and send 5 to renderTrailers()
 	for (let i = 0; i < 5; i++) {
 		renderTrailers(selectedTrailers[i], i + 1);
-	}
+	};
 
-	populateFavorites();
-
-	// List all movies in the recommendation-list
+	// List all top movies
 	renderMovieList(store.topMovieList);
-}
-
-function initFavorites() {
-	console.log('Initializing favorites page');
-
-	populateFavorites();
-	renderMovieList(store.favoriteMovies);
-}
-
-function renderMovieList(movieList) {
-	const cardContainer = document.getElementById('cardContainer');
-
-	movieList.forEach(movie => {
-		const isFavorite = store.favoriteMovies.some(favMovie => favMovie.Title === movie.Title)
-		createMovieCard(movie, isFavorite);
-	});
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
+	// Populate all favorites from localStorage.
+	// Must be loaded first because it's used in most modules.
+	populateFavorites();
+
+	// Initialize search functionality
+	initSearch();
+
+	// Determine page and initialize it
+	console.log(`Initializing ${currentPage} page`);
+
+	// Init the correct page based on the currentPage variable
 	if (currentPage === 'index') {
 		initIndex();
 	} else if (currentPage === 'favorites') {
 		initFavorites();
-	}
+	} else if (currentPage === 'movie') {
+		initMovieDetails();
+	};
 });
