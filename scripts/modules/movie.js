@@ -2,6 +2,7 @@ import { fetchMovieDetails } from './api.js';
 import store from './store.js';
 import { toggleFavorite } from './favorites.js';
 
+// Initalizing movie details when the movie-card is clicked
 export function initMovieDetails() {
 	const urlParams = new URLSearchParams(window.location.search);
 	const imdbID = urlParams.get('imdbID');
@@ -19,6 +20,7 @@ export function initMovieDetails() {
 	};
 };
 
+// Function for creating elements to the movie-card to show the details
 export function displayMovieDetails(movie) {
 	const movieTitle = document.getElementById('movieTitle');
 	const moviePoster = document.getElementById('moviePoster');
@@ -34,6 +36,7 @@ export function displayMovieDetails(movie) {
 
 	toggleStar(movie);
 
+	// Adding event-listener to the star in the movie-card, so it can be clicked and added to favorites
 	star.addEventListener('click', e => {
 		e.stopPropagation();
 		toggleFavorite(movie);
@@ -41,6 +44,10 @@ export function displayMovieDetails(movie) {
 	});
 };
 
+// Making sure that the star in the movie-card is filled or not filled,
+// depending if it is added to favorites, or removed.
+// Using imdbID instead of imdb title, beacuse the same movie can have different names
+// in the different API:s, but the imdbID stays the same.
 function toggleStar(movie) {
 	const star = document.querySelector('.movie-details .star');
 

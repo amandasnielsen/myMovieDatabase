@@ -1,7 +1,8 @@
 import { toggleFavorite } from './favorites.js';
 import store from './store.js';
 
-// TODO Comment this
+// Gets the current page's path and removes the last part
+// Useful for finding the main folder of the page.
 const baseUrl = window.location.pathname.split('/').slice(0, -1).join('/');
 
 /* 
@@ -26,7 +27,7 @@ export async function createMovieCard(movie, isFavorite) {
 	poster.classList.add('movie-card__poster');
 
 	// Check if the movie has a valid poster url and check that the url is reachable
-	// If the poster is not available, use a placeholder image 
+	// If the poster is not available or broken url, use a placeholder image 
 	if (!movie.Poster || movie.Poster === 'N/A') {
 		poster.src = `${baseUrl}/res/icons/missing-poster.svg`;
 	} else {

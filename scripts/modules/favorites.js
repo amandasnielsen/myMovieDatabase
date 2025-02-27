@@ -49,9 +49,7 @@ export function toggleFavorite(movie) {
 	updateStarColor(movie);
 }
 
-/* 
- * Save favorite movies to localStorage
- */
+// Save favorite movies to localStorage
 function saveFavorites() {
 	console.log('Updating favorite movies in localStorage');
 
@@ -60,9 +58,7 @@ function saveFavorites() {
 	localStorage.setItem(localStorageFavoritesKey, JSON.stringify(store.favoriteMovies));
 };
 
-/*
- * Populate favorite movies from localStorage
- */
+// Populate favorite movies from localStorage
 export function populateFavorites() {
 	console.log('Populating favorite movies from localStorage');
 

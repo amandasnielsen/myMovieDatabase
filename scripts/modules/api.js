@@ -1,3 +1,4 @@
+// API for renderTrailers and showing top movies for recommendations
 export async function fetchTopMovies() {
 	console.log('Fetching top movies');
 

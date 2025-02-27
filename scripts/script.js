@@ -6,8 +6,8 @@ import { initSearch } from './modules/search.js';
 import { renderMovieList } from './modules/movieCard.js';
 import { renderTrailers } from './modules/caroussel.js';
 
-// Determine the current page based on the URL.
-// Use split and pop to get the last part of the URL since it can be in a subfolder.
+// Determine the current page based on the URL
+// Use split and pop to get the last part of the URL since it can be in a subfolder
 let currentPage = 'index';
 
 if (window.location.pathname.split('/').pop() === 'favorites.html') {
@@ -18,18 +18,12 @@ if (window.location.pathname.split('/').pop() === 'favorites.html') {
 	currentPage = 'search';
 };
 
-/* 
- * Initialize the index page
- *
- * Fetch top movies from API
- * Render 5 random trailers
- * List all top movies
- */
+// Initializing Index page with trailers and recommendations from API
 async function initIndex() {
-	// Fetch top movies from API
+	// Fetch top movies
 	store.topMovieList = await fetchTopMovies();
 
-	// Make sure we have top movies
+	// Make sure we have top movies from API
 	if (!store.topMovieList || store.topMovieList.length === 0) {
 		console.error('Unable to load top movies');
 		return;
@@ -49,11 +43,11 @@ async function initIndex() {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-	// Populate all favorites from localStorage.
-	// Must be loaded first because it's used in most modules.
+	// Populate all favorites from localStorage
+	// Must be loaded first because it's used in most modules, and accessible from each page
 	populateFavorites();
 
-	// Initialize search functionality
+	// Initialize search function
 	initSearch();
 
 	// Determine page and initialize it

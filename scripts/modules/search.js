@@ -1,6 +1,7 @@
 import { fetchMovies } from './api.js';
 import { renderMovieList } from './movieCard.js';
 
+// Initializing search-function and adding elements to be shown
 export function initSearch() {
 	const searchForm = document.getElementById('searchForm');
 	const searchInput = document.getElementById('searchInput');
@@ -12,11 +13,13 @@ export function initSearch() {
 		e.preventDefault();
 		const query = searchInput.value.trim();
 
+		// Search-query must contain at least 2 characters
 		if (query.length > 2) {
 			window.location.href = `search.html?query=${query}`;
 		}
 	})
 
+	// Showing a descriptive text for the search for movies based on the search-query
 	if (window.location.pathname.includes('search.html') && query) {
 		fetchMovies(query).then(movies => {
 			if (movies?.length) {
