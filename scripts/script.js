@@ -9,9 +9,10 @@ import { renderTrailers, initTrailerArrows } from './modules/caroussel.js';
 // Determine the current page based on the URL
 // Use split and pop to get the last part of the URL since it can be in a subfolder
 const path = window.location.pathname.split('/').pop();
+const bodyId = document.body.id;
 
 let currentPage = 'unknown';
-if (path === 'index.html' && !window.location.pathname.includes('myMovieDatabase')) {
+if (bodyId === 'page-movie-database') {
   currentPage = 'index';
 } else if (path === 'favorites.html') {
   currentPage = 'favorites';
@@ -49,10 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log(`Initializing ${currentPage} page`);
 
   if (currentPage === 'index') {
-    initIndex();
-  } else if (currentPage === 'favorites') {
-    initFavorites();
-  } else if (currentPage === 'movie') {
-    initMovieDetails();
-  }
+		initIndex();
+	} else if (currentPage === 'favorites') {
+		initFavorites();
+	} else if (currentPage === 'movie') {
+		initMovieDetails();
+	}
 });
