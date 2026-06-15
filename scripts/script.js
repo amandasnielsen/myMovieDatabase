@@ -8,15 +8,18 @@ import { renderTrailers, initTrailerArrows } from './modules/caroussel.js';
 
 // Determine the current page based on the URL
 // Use split and pop to get the last part of the URL since it can be in a subfolder
-let currentPage = 'index';
+const path = window.location.pathname.split('/').pop();
 
-if (window.location.pathname.split('/').pop() === 'favorites.html') {
-	currentPage = 'favorites';
-} else if (window.location.pathname.split('/').pop() === 'movie.html') {
-	currentPage = 'movie';
-} else if (window.location.pathname.split('/').pop() === 'search.html') {
-	currentPage = 'search';
-};
+let currentPage = 'unknown';
+if (path === 'index.html' && !window.location.pathname.includes('myMovieDatabase')) {
+  currentPage = 'index';
+} else if (path === 'favorites.html') {
+  currentPage = 'favorites';
+} else if (path === 'movie.html') {
+  currentPage = 'movie';
+} else if (path === 'search.html') {
+  currentPage = 'search';
+}
 
 // Initializing Index page with trailers and recommendations from API
 async function initIndex() {
@@ -32,25 +35,24 @@ async function initIndex() {
   }
   initTrailerArrows();
   renderMovieList(store.topMovieList);
-};
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-	// Populate all favorites from localStorage
-	// Must be loaded first because it's used in most modules, and accessible from each page
-	populateFavorites();
+  // Populate all favorites from localStorage
+  // Must be loaded first because it's used in most modules, and accessible from each page
+  populateFavorites();
 
-	// Initialize search function
-	initSearch();
+  // Initialize search function
+  initSearch();
 
-	// Determine page and initialize it
-	console.log(`Initializing ${currentPage} page`);
+  // Determine page and initialize it
+  console.log(`Initializing ${currentPage} page`);
 
-	// Init the correct page based on the currentPage variable
-	if (currentPage === 'index') {
-		initIndex();
-	} else if (currentPage === 'favorites') {
-		initFavorites();
-	} else if (currentPage === 'movie') {
-		initMovieDetails();
-	};
+  if (currentPage === 'index') {
+    initIndex();
+  } else if (currentPage === 'favorites') {
+    initFavorites();
+  } else if (currentPage === 'movie') {
+    initMovieDetails();
+  }
 });

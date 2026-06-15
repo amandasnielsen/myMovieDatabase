@@ -1,8 +1,11 @@
 export function renderTrailers(movie, num) {
+  const container = document.querySelector('.trailers__container');
+  if (!container) return; // stop if element doesn't exist on this page
+
   const iFrameRef = document.createElement('iframe');
   iFrameRef.classList.add('trailers__video', `trailers__video-${num}`);
   iFrameRef.src = movie.Trailer_link;
-  document.querySelector('.trailers__container').appendChild(iFrameRef);
+  container.appendChild(iFrameRef);
 }
 
 export function initTrailerArrows() {
