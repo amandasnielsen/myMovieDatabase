@@ -4,7 +4,7 @@ import { initFavorites, populateFavorites } from './modules/favorites.js';
 import { initMovieDetails } from './modules/movie.js';
 import { initSearch } from './modules/search.js';
 import { renderMovieList } from './modules/movieCard.js';
-import { renderTrailers } from './modules/caroussel.js';
+import { renderTrailers, initTrailerArrows } from './modules/caroussel.js';
 
 // Determine the current page based on the URL
 // Use split and pop to get the last part of the URL since it can be in a subfolder
@@ -20,26 +20,18 @@ if (window.location.pathname.split('/').pop() === 'favorites.html') {
 
 // Initializing Index page with trailers and recommendations from API
 async function initIndex() {
-	// Fetch top movies
-	store.topMovieList = await fetchTopMovies();
-
-	// Make sure we have top movies from API
-	if (!store.topMovieList || store.topMovieList.length === 0) {
-		console.error('Unable to load top movies');
-		return;
-	};
-
-	// Shuffle all top movies by scrambling their indexes and select the first 5 elements
-	const shuffledMovies = [...store.topMovieList].sort(() => 0.5 - Math.random());
-	const selectedTrailers = shuffledMovies.slice(0, 5);
-
-	// Loop through all movies and send 5 to renderTrailers()
-	for (let i = 0; i < 5; i++) {
-		renderTrailers(selectedTrailers[i], i + 1);
-	};
-
-	// List all top movies
-	renderMovieList(store.topMovieList);
+  store.topMovieList = await fetchTopMovies();
+  if (!store.topMovieList || store.topMovieList.length === 0) {
+    console.error('Unable to load top movies');
+    return;
+  }
+  const shuffledMovies = [...store.topMovieList].sort(() => 0.5 - Math.random());
+  const selectedTrailers = shuffledMovies.slice(0, 5);
+  for (let i = 0; i < 5; i++) {
+    renderTrailers(selectedTrailers[i], i + 1);
+  }
+  initTrailerArrows();
+  renderMovieList(store.topMovieList);
 };
 
 document.addEventListener('DOMContentLoaded', () => {

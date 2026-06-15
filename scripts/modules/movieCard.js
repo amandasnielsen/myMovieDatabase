@@ -11,7 +11,7 @@ const baseUrl = window.location.pathname.split('/').slice(0, -1).join('/');
  * The card contains a poster, title, and a star icon
  * The star icon is clickable and toggles the favorite status
  */
-export async function createMovieCard(movie, isFavorite) {
+export function createMovieCard(movie, isFavorite) {
 	const container = document.getElementById('cardContainer');
 
 	// Create the movie card element
@@ -31,13 +31,9 @@ export async function createMovieCard(movie, isFavorite) {
 	if (!movie.Poster || movie.Poster === 'N/A') {
 		poster.src = `${baseUrl}/res/icons/missing-poster.svg`;
 	} else {
-		try {
-			await fetch(movie.Poster);
-			poster.src = movie.Poster;
-		} catch (error) {
-			console.log('Poster not found:', error.message);
-			// If the poster fails to load, use a placeholder image
-			poster.src = `${baseUrl}/res/icons/missing-poster.svg`;	
+		poster.src = movie.Poster;
+		poster.onerror = () => {
+			poster.src = `${baseUrl}/res/icons/missing-poster.svg`;
 		};
 	};
 
