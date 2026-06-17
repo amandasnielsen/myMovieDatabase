@@ -10,16 +10,21 @@ import { renderTrailers, initTrailerArrows } from './modules/caroussel.js';
 // Use split and pop to get the last part of the URL since it can be in a subfolder
 const path = window.location.pathname.split('/').pop();
 const bodyId = document.body.id;
+const query = new URLSearchParams(window.location.search).get('query');
 
 let currentPage = 'unknown';
 if (bodyId === 'page-movie-database') {
-  currentPage = 'index';
-} else if (path === 'favorites.html') {
-  currentPage = 'favorites';
-} else if (path === 'movie.html') {
-  currentPage = 'movie';
-} else if (path === 'search.html') {
-  currentPage = 'search';
+  if (query !== null) {
+    currentPage = 'search';
+  } else if (path === 'movie' || path === 'movie.html') {
+    currentPage = 'movie';
+  } else if (path === 'favorites' || path === 'favorites.html') {
+    currentPage = 'favorites';
+  } else {
+    currentPage = 'index';
+  }
+} else {
+  currentPage = 'portfolio';
 }
 
 // Initializing Index page with trailers and recommendations from API

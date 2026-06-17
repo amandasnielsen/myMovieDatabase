@@ -78,20 +78,17 @@ export function createMovieCard(movie, isFavorite) {
  * Render a list of movies to the DOM
  */
 export function renderMovieList(movieList) {
-	console.log('Rendering movie list');
+  const container = document.getElementById('cardContainer');
+  if (!container) return; // stop if not on a page with cards
 
-	const container = document.getElementById('cardContainer');
-
-	// Clear the container before rendering
-	for (const child of container.children) {
-		child.remove();
-	};
-	
-	movieList.forEach(movie => {
-		const isFavorite = store.favoriteMovies.some(favMovie => favMovie.imdbID === movie.imdbID);
-		createMovieCard(movie, isFavorite);
-	});
-};
+  for (const child of container.children) {
+    child.remove();
+  }
+  movieList.forEach(movie => {
+    const isFavorite = store.favoriteMovies.some(favMovie => favMovie.imdbID === movie.imdbID);
+    createMovieCard(movie, isFavorite);
+  });
+}
 
 /*
  * Delete a card from the DOM based on its index
